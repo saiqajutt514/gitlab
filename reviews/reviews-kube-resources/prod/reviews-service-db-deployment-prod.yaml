@@ -1,0 +1,73 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: reviews-service-db-deployment
+  namespace: production-reviews
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      nodeName: prod-node02
+      containers:
+        - image: registry.gitlab.com/loopwallet/loop_transportation_backend/mysql:latest
+          name: mysql
+          env:
+            - name: MYSQL_DATABASE
+              value: transport-prod
+            - name: MYSQL_USER
+              value: app
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ROOT_PASSWORD
+                  name: mysql-secrets
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: mysql-secrets 
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: reviews-service-mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: reviews-service-mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: reviews-service-mysql-pv-claim
+      imagePullSecrets:
+        - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews-mysql-service
+  namespace: production-reviews
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reviews-service-mysql-pv-claim
+  namespace: production-reviews
+spec: 
+  accessModes:
+    - ReadWriteOnce 
+  resources: 
+    requests:
+      storage: 10Gi

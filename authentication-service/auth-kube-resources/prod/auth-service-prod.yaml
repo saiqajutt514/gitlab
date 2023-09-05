@@ -1,0 +1,60 @@
+apiVersion: v1
+data:
+ TCP_PORT: "3008"
+ TCP_HOST: 0.0.0.0
+ KAFKA_HOST: kafka.production:9092
+ EWALLET_CHANNEL: APP
+ EWALLET_USERNAME: transportation
+ EWALLET_PASSWORD: tSqj7Ny2F7R9gdtyLD56
+ EWALLET_API_URL: https://live.loop.sa/billers/rest/v2
+ REDIS_HOST: redis.production
+ REDIS_PORT: "6379"
+ LOG_MODE: production
+kind: ConfigMap
+metadata:
+  name: auth-service-config
+  namespace: production-auth
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service-deployment
+  namespace: production-auth
+spec:
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: auth-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/auth-service-production:latest
+        imagePullPolicy: Always
+        name: auth-service
+        ports:
+        - containerPort: 8001
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service-svc
+  namespace: production-auth
+spec:
+  selector:
+    app: auth-service
+  ports:
+    - name: app-port
+      port: 8001
+      targetPort: 8001
+    - name: tcp
+      protocol: TCP
+      port: 3008
+      targetPort: 3008

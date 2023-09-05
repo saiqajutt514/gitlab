@@ -1,0 +1,73 @@
+apiVersion: v1
+data:
+ API_PORT: "3017"
+ TCP_PORT: "3007"
+ TCP_HOST: 0.0.0.0
+ CAPTAIN_TCP_PORT: "3004"
+ CAPTAIN_TCP_HOST: "captain-service-svc.dev-captain"
+ TRIP_TCP_PORT: "3006"
+ TRIP_TCP_HOST: "trip-service-svc.dev-trip"
+ MYSQL_DB_USER: transport_uat
+ MYSQL_DB_PASSWORD: hNwbVfsjwum9pJvd
+ MYSQL_DB_PORT: "3306"
+ MYSQL_DB_HOST: 172.16.11.170
+ MYSQL_DB: transport-uat
+ EWALLET_PAYMENT_USER: user
+ EWALLET_PAYMENT_PASS: user123
+ EWALLET_PAYMENT_URL: https://uat.bayanwallet.com/billers/rest/v2
+ EWALLET_SUBSCRIPTION_USER: transportation
+ EWALLET_SUBSCRIPTION_PASS: tSqj7Ny2F7R9gdtyLD56
+ EWALLET_SUBSCRIPTION_URL: https://uat.bayanwallet.com/billers/rest/v2/private
+ EWALLET_PAYMENT_CHANNEL: APP
+ KAFKA_HOST: kafka.dev:9092
+ REDIS_HOST: redis-uat.dev
+ REDIS_PORT: "6379"
+ LOG_MODE: production
+kind: ConfigMap
+metadata:
+  name: payment-service-config
+  namespace: dev-payment
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service-deployment
+  namespace: dev-payment
+spec:
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: payment-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/payment-service:latest
+        imagePullPolicy: Always
+        name: payment-service
+        ports:
+        - containerPort: 8009
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service-svc
+  namespace: dev-payment
+spec:
+  selector:
+    app: payment-service
+  ports:
+    - name: app-port
+      port: 8009
+      targetPort: 8009
+    - name: tcp
+      protocol: TCP
+      port: 3007
+      targetPort: 3007

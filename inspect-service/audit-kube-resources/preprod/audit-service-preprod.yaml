@@ -1,0 +1,54 @@
+apiVersion: v1
+data:
+ MYSQL_DB_USER: transport_preprod
+ MYSQL_DB_PASSWORD: GMNbcsHS4NEmh5ND
+ MYSQL_DB_PORT: "3306"
+ MYSQL_DB_HOST: 172.16.11.170
+ MYSQL_DB: transport-preprod
+ KAFKA_HOST: kafka.preprod:9092
+ REDIS_HOST: redis-preprod.preprod
+ REDIS_PORT: "6379"
+ LOG_MODE: development
+kind: ConfigMap
+metadata:
+  name: audit-service-config
+  namespace: preprod-audit
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-service-deployment
+  namespace: preprod-audit
+spec:
+  selector:
+    matchLabels:
+      app: audit-service
+  template:
+    metadata:
+      labels:
+        app: audit-service
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef: 
+            name: audit-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/audit-service-preprod:latest
+        imagePullPolicy: Always
+        name: audit-service
+        ports:
+        - containerPort: 8012
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: audit-service-svc
+  namespace: preprod-audit
+spec:
+  selector:
+    app: audit-service
+  ports:
+    - name: app-port
+      port: 8012
+      targetPort: 8012

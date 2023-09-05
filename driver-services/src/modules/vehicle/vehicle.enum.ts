@@ -1,0 +1,15 @@
+export enum VehicleListSort {
+  cabName = "cab.name",
+  cylinders = "vehicle.cylinders",
+  lkVehicleClass = "vehicle.lkVehicleClass",
+  bodyType = "vehicle.bodyType",
+  majorColor = "vehicle.majorColor",
+  majorColorEnglish = "vehicle.majorColorEnglish",
+  modelYear = "vehicle.modelYear",
+  vehicleCapacity = "vehicle.vehicleCapacity",
+  vehicleMaker = "vehicle.vehicleMaker",
+  vehicleMakerEnglish = "vehicle.vehicleMakerEnglish",
+  vehicleModel = "vehicle.vehicleModel",
+  vehicleModelEnglish = "vehicle.vehicleModelEnglish",
+  createdAt = "vehicle.createdAt",
+}

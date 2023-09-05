@@ -1,0 +1,78 @@
+apiVersion: v1
+data:
+ API_PORT: "3014"
+ TCP_PORT: "3004"
+ TCP_HOST: 0.0.0.0
+ TRIP_TCP_PORT: "3006"
+ TRIP_TCP_HOST: "trip-service-svc.preprod-trip"
+ PAYMENT_TCP_PORT: "3007"
+ PAYMENT_TCP_HOST: "payment-service-svc.preprod-payment"
+ REVIEW_TCP_PORT: "3009"
+ REVIEW_TCP_HOST: "reviews-service-svc.preprod-review"
+ AUTH_TCP_PORT: "3008"
+ AUTH_TCP_HOST: "auth-service-svc.preprod-auth"
+ ADMIN_TCP_PORT: "3003"
+ ADMIN_TCP_HOST: "admin-service-svc.preprod-admin"
+ MYSQL_DB_USER: transport_preprod
+ MYSQL_DB_PASSWORD: GMNbcsHS4NEmh5ND
+ MYSQL_DB_PORT: "3306"
+ MYSQL_DB_HOST: 172.16.11.170
+ MYSQL_DB: transport-preprod
+ KAFKA_HOST: kafka.preprod:9092
+ GOOGLE_KEY: AIzaSyAJWpL90sZNJR0nU8FPowP0H4LkH-5I0qc
+ IS_WASL_LIVE: "true"
+ WASL_APP_ID: 2dd7aff1
+ WASL_APP_KEY: ef68ea51da381b26b135f84771fb451d
+ WASL_CLIENT_ID: 41ba946e-3cae-4cca-8ca5-df29cff2daad
+ WASL_END_POINT: https://wasl.api.elm.sa/api/dispatching/v2
+ REDIS_HOST: redis-preprod.preprod
+ REDIS_PORT: "6379"
+ LOG_MODE: production
+ S3_ACCESS_URL: https://loop-captain-preprod.s3.me-south-1.amazonaws.com
+kind: ConfigMap
+metadata:
+  name: captain-service-config
+  namespace: preprod-captain
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: captain-service-deployment
+  namespace: preprod-captain
+spec:
+  selector:
+    matchLabels:
+      app: captain-service
+  template:
+    metadata:
+      labels:
+        app: captain-service
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: captain-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/captain-service-preprod:latest
+        imagePullPolicy: Always
+        name: captain-service
+        ports:
+        - containerPort: 8002
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: captain-service-svc
+  namespace: preprod-captain
+spec:
+  selector:
+    app: captain-service
+  ports:
+    - name: app-port
+      port: 8002
+      targetPort: 8002
+    - name: tcp
+      protocol: TCP
+      port: 3004
+      targetPort: 3004

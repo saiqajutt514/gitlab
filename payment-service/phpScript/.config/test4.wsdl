@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions   xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+  
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" >
+            <xsd:element name="testWsdl">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="testWsdlRequest">
+    <wsdl:part name="parameters" element="tns1:testWsdl">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="testWsdlResponse">
+    <wsdl:part name="parameters" element="tns1:testWsdlResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="testWsdlPortType">
+    <wsdl:operation name="testWsdl">
+      <wsdl:input name="testWsdlRequest" message="impl:testWsdlRequest">
+    </wsdl:input>
+      <wsdl:output name="testWsdlResponse" message="impl:testWsdlResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="testWsdlTestBinding" type="impl:testWsdlPortType">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="testWsdl">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="testWsdlRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="testWsdlResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="testWsdlTestService">
+    <wsdl:port name="testWsdlPort" binding="impl:testWsdlTestBinding">
+      <wsdlsoap:address location=""/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

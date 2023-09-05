@@ -1,0 +1,59 @@
+apiVersion: v1
+data:
+ MYSQL_DB_USER: transport_prod
+ MYSQL_DB_PASSWORD: HufmN4tmXmY2FEkY
+ MYSQL_DB_PORT: "3306"
+ MYSQL_DB_HOST: 172.16.11.165
+ MYSQL_DB: transport-prod
+ KAFKA_HOST: kafka.production:9092
+ LOG_MODE: production
+ TCP_PORT: "3009"
+ TCP_HOST: 0.0.0.0
+kind: ConfigMap
+metadata:
+  name: reviews-service-config
+  namespace: production-reviews
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-service-deployment
+  namespace: production-reviews
+spec:
+  selector:
+    matchLabels:
+      app: reviews-service
+  template:
+    metadata:
+      labels:
+        app: reviews-service
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: reviews-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/reviews-service-production:latest
+        imagePullPolicy: Always
+        name: reviews-service
+        ports:
+        - containerPort: 8005
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews-service-svc
+  namespace: production-reviews
+spec:
+  selector:
+    app: reviews-service
+  ports:
+    - name: app-port
+      port: 8005
+      targetPort: 8005
+    - name: tcp
+      protocol: TCP
+      port: 3009
+      targetPort: 3009

@@ -1,0 +1,17 @@
+export const errorMessage = {
+  ACCOUNT_IS_INACTIVE: 'Your account was inactive, Please contact support',
+  ADMIN_NOT_FOUND: "Admin doesn't exists",
+  DETAILS_NOT_FOUND: 'Details not found',
+  EMAIL_ALREADY_EXISTS: 'Email already exists',
+  EMAIL_NOT_REGISTERED: 'Email not registered',
+  INVALID_REGISTERED_EMAIL: 'Please enter your registered email',
+  OLD_PASSWORD_NOT_MATCHED: 'Old password does not matched',
+  PASSWORD_LINK_EXPIRED: 'Link may be expired, Please try again with new link',
+  SET_PASSWORD_FOR_ACCOUNT: 'Please set password for your account',
+  SOMETHING_WENT_WRONG: 'Something went wrong, please try again later',
+  USER_ALREADY_EXIST: 'User already exists.',
+  EMAIL_ALREADY_EXIST: 'Email already exists.',
+  MOBILE_NUMBER_ALREADY_EXIST: 'Mobile number already exists.',
+  USER_NOT_FOUND: 'User not found.',
+  INVALIDE_CAB_ID: 'Invalid cab id',
+};

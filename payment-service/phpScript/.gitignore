@@ -1,0 +1,5 @@
+/vendor/
+/debug.txt
+/.idea/
+/.config/cert.crt
+/.config/private.pem

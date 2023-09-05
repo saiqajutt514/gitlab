@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: reviews-service-mysql-pv-claim
+  namespace: dev
+  annotations:
+    pv.kubernetes.io/provisioned-by: k8s.io/minikube-hostpath
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: reviews-service-mysql-pv-claim
+    namespace: dev
+  hostPath:
+    path: /tmp/hostpath-provisioner/dev/reviews-service-mysql-pv-claim
+    type: ""
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  volumeMode: Filesystem

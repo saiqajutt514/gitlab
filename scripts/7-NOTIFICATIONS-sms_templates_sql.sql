@@ -1,0 +1,18 @@
+SET NAMES utf8mb4;
+
+TRUNCATE `sms_templates`;
+INSERT INTO `sms_templates` (`id`, `createdAt`, `updatedAt`, `templateCode`, `templateName`, `templateNameArabic`, `message`, `messageArabic`, `dataKeys`, `receiver`, `createdBy`, `modifiedBy`, `isDeleted`, `status`) VALUES
+(UUID(),	NOW(),	NOW(),	'TRIP_REQUEST_IMMEDIATE_TO_DRIVER',	'Immediate Ride Request ( Driver )',	'Immediate Ride Request ( Driver )',	'New ride request from {%= riderName %}',	'New ride request from {%= riderName %}',	'[\"riderName\"]',	'2',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'REGISTRATION_INQUIRY_TO_GUEST',	'Registration Inquiry ( Guest )',	NULL,	'Welcome to Loop',	'Thank you for contact with us',	'[]',	'4',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'SUBSCRIPTION_EXPIRED_TO_DRIVER',	'Subscription Expired ( Driver )',	NULL,	'Subscription expires soon',	'Subscription expires soon',	'[]',	'2',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'TRIP_COMPLETED_BY_RIDER_TO_DRIVER',	'Ride Completed by Rider ( Driver )',	NULL,	'Ride completed',	'Ride completed',	'[]',	'2',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'TRIP_ENDED_TO_RIDER',	'Destination Reached ( Rider )',	NULL,	'Ride has been completed',	'Ride has been completed',	'[]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'TRIP_REQUEST_SCHEDULED_TO_DRIVER',	'Scheduled Ride Request ( Driver )',	NULL,	'Schedule ride request from {%= riderName %}',	'Schedule ride request from {%= riderName %}',	'[\"riderName\"]',	'2',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'SUBSCRIPTION_EXPIRES_SOON_TO_DRIVER',	'Subscription Expires soon ( Driver )',	NULL,	'Your subscription is going to be expire soon',	'Your subscription is going to be expire soon',	NULL,	'2',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'TRIP_COMPLETED_BY_DRIVER_TO_RIDER',	'Ride Completed by Driver ( Rider )',	NULL,	'Ride completed',	'Ride completed',	'[]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'TRIP_ACCEPTED_TO_RIDER',	'Ride Request Accepted by Driver ( Rider )',	NULL,	'Your ride request has been accepted',	'Your ride request has been accepted',	'[]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),	'SEND_OTP_TO_RIDER',	'Send OTP to rider ( Dispatcher Admin )',	NULL,	'Hello {%= riderName %} use this one time password to validate your mobile number: {%= otp %}',	'Hello {%= riderName %} use this one time password to validate your mobile number: {%= otp %}',	'[\"riderName\",\"otp\"]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),  'RIDER_SCHEDULED_TRIP_CONFIRMATION_TO_RIDER',	'Scheduled Trip Confirmation ( Rider )',	NULL,	'You have a scheduled trip in 30 mins, do you want to continue with it or cancel it ?',	'You have a scheduled trip in 30 mins, do you want to continue with it or cancel it ?',	'[]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),  'NOTIFY_DRIVER_FOR_ELIGIBILITY_EXPIRY',	'Notify For Eligibility Expiry ( Driver )',	NULL,	'Your driver''s license eligibility expires in {%= days %} days. Please renew your details to keep enjoying your Captain subscription and its benefits.',	'Your driver''s license eligibility expires in {%= days %} days. Please renew your details to keep enjoying your Captain subscription and its benefits.',	'[\"days\"]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),  'NOTIFY_DRIVER_FOR_WASL_APPROVAL',	'Notify Driver For WASL Approval (Driver)',	NULL,	'Your driver''s license eligibility check is approved.',	'Your driver''s license eligibility check is approved.',	'[]',	'1',	NULL,	NULL,	NULL,	1),
+(UUID(),	NOW(),	NOW(),  'NOTIFY_DRIVER_FOR_WASL_REJECTION',	'Notify Driver For WASL Rejection (Driver)',	NULL,	'Your driver''s license eligibility check is rejected.',	'Your driver''s license eligibility check is rejected.',	'[]',	'1',	NULL,	NULL,	NULL,	1);

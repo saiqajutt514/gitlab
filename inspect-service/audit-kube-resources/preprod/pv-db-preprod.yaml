@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: audit-service-mysql-pv-claim-preprod
+  namespace: preprod-audit    
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: audit-service-mysql-pv-claim-preprod
+    namespace: preprod-audit
+  hostPath:
+    path: /tmp/hostpath-provisioner/preprod-audit/audit-service-mysql-pv-claim-preprod
+    type: ""
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  volumeMode: Filesystem

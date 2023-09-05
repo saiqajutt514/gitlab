@@ -1,0 +1,14 @@
+
+export enum TRIP_PHOTO_ACTION {
+    CREATED = 1,
+    STARTED = 2,
+    DESTINATION_CHANGED = 3,
+    CANCELLED_BY_RIDER = 4,
+    CANCELLED_BY_DRIVER = 5,
+    COMPLETED = 6,
+}
+
+export enum TRIP_IMAGE_BY {
+    RIDER = 1,
+    DRIVER = 2
+}

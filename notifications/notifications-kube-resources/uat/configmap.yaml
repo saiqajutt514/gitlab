@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+ MYSQL_DB_USER: transport_uat
+ MYSQL_DB_PASSWORD: hNwbVfsjwum9pJvd
+ MYSQL_DB_PORT: "3306"
+ MYSQL_DB_HOST: 172.16.11.170
+ MYSQL_DB: transport-uat
+ KAFKA_HOST: kafka.dev:9092
+ REDIS_HOST: redis-uat
+ REDIS_PORT: "6379"
+ EWALLET_CHANNEL: APP
+ EWALLET_USERNAME: transportation
+ EWALLET_PASSWORD: tSqj7Ny2F7R9gdtyLD56
+ EWALLET_API_URL: https://uat.bayanwallet.com/billers/rest/v2
+ EWALLET_SP_ID: bayanpay
+ FCM_SERVER_KEY: AAAAVWo08ww:APA91bGIdwRG__lHZwaW8w2W8MDvN2w7S__jpi1CNqecGMDegCOANsV-tyFxt_6Ikm9UTOgvmV-rduGLzAw8PLOaXUUa0d862pN20i2jKoHXW7lrTEDYNJIa3-_YaRiJsJ-BCZtiJ23_
+ S3_TRANSPORT_ACCESS_URL: https://loop-transportation-uat.s3.me-south-1.amazonaws.com
+ SMTP_HOST: "93.189.101.20"
+ SMTP_PORT: "25"
+ SMTP_SECURE: "false"
+ SMTP_USERNAME: "customerservice@bayanwallet.com"
+ SMTP_PASSWORD: "Fuz52265"
+ LOG_MODE: production
+kind: ConfigMap
+metadata:
+  name: notifications-service-deployment
+  namespace: dev

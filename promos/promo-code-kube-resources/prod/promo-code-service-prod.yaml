@@ -1,0 +1,59 @@
+apiVersion: v1
+data:
+ TCP_PORT: "3005"
+ TCP_HOST: 0.0.0.0
+ MYSQL_DB_USER: transport_prod
+ MYSQL_DB_PASSWORD: HufmN4tmXmY2FEkY
+ MYSQL_DB_PORT: "3306"
+ MYSQL_DB_HOST: 172.16.11.165
+ MYSQL_DB: transport-prod
+ KAFKA_HOST: kafka.production:9092
+ LOG_MODE: production
+kind: ConfigMap
+metadata:
+  name: promo-code-service-config
+  namespace: production-promo-code
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promo-code-service-deployment
+  namespace: production-promo-code
+spec:
+  selector:
+    matchLabels:
+      app: promo-code-service
+  template:
+    metadata:
+      labels:
+        app: promo-code-service
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: promo-code-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/promo-code-service-production:latest
+        imagePullPolicy: Always
+        name: promo-code-service
+        ports:
+        - containerPort: 8004
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: promo-code-service-svc
+  namespace: production-promo-code
+spec:
+  selector:
+    app: promo-code-service
+  ports:
+    - name: app-port
+      port: 8004
+      targetPort: 8004
+    - name: tcp
+      protocol: TCP
+      port: 3005
+      targetPort: 3005

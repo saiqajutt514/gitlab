@@ -1,0 +1,63 @@
+apiVersion: v1
+data:
+ DB_HOST: 172.16.11.141:27017
+ DB_USER: chat-prod
+ DB_PASSWORD: PLm5ydw4g7AYPmfV
+ DB_NAME: chat-prod
+ KAFKA_HOST: kafka.production:9092
+ REDIS_HOST: redis.production
+ REDIS_PORT: "6379"
+ SOCKET_PORT: "8100"
+ REVIEW_TCP_PORT: "3009"
+ REVIEW_TCP_HOST: "reviews-service-svc.production-reviews"
+ LOG_MODE: development
+ S3_BUCKET: loop-captain-prod
+ S3_CHAT_BUCKET: loop-chat-prod
+ S3_PUBLIC_BUCKET: loop-transportation-prod
+ S3_ACCESS_URL: https://loop-captain-uat.s3.me-south-1.amazonaws.com
+ S3_CHAT_ACCESS_URL: https://loop-chat-uat.s3.me-south-1.amazonaws.com
+ S3_PUBLIC_ACCESS_URL: https://loop-transportation-uat.s3.me-south-1.amazonaws.com
+kind: ConfigMap
+metadata:
+  name: chat-service-config
+  namespace: production-chat
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-service-deployment
+  namespace: production-chat
+spec:
+  selector:
+    matchLabels:
+      app: chat-service
+  template:
+    metadata:
+      labels:
+        app: chat-service
+    spec:
+      nodeName: prod-node03
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: chat-service-config
+        image: registry.gitlab.com/loopwallet/loop_transportation_backend/chat-service-production:latest
+        imagePullPolicy: Always
+        name: chat-service
+        ports:
+        - containerPort: 8013
+      imagePullSecrets:
+      - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-service-svc
+  namespace: production-chat
+spec:
+  selector:
+    app: chat-service
+  ports:
+    - name: app-port
+      port: 27017
+      targetPort: 27017

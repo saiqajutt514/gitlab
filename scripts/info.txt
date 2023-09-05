@@ -1,0 +1,21 @@
+Admin - permission
+https://loop-sa.slack.com/files/U021D7BNVJL/F028MB0NY6L/4-admin-permission.sql
+
+Admin - setting
+https://loop-sa.slack.com/files/U021D7BNVJL/F027XS60HK5/1-admin-setting_sql.sql
+
+Admin - role
+https://loop-sa.slack.com/files/U021D7BNVJL/F027GUADH0F/2-admin-role.sql
+
+Admin - category
+https://loop-sa.slack.com/files/U021D7BNVJL/F027XL5GE1G/3-admin-category.sql
+
+
+Notifications - sms_templates
+https://loop-sa.slack.com/files/U021D7BNVJL/F027QTKQT2A/7-notifications-sms_templates_sql.sql
+
+Notifications - push_templates
+https://loop-sa.slack.com/files/U021D7BNVJL/F027QTL084W/6-notifications-push_templates_sql.sql
+
+Notifications - email_templates
+https://loop-sa.slack.com/files/U021D7BNVJL/F027GUBCQFR/5-notifications-email_templates.sql

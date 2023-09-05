@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: admin-service-mysql-pv-claim-preprod
+  namespace: preprod-admin    
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: admin-service-mysql-pv-claim-preprod
+    namespace: preprod-admin
+  hostPath:
+    path: /tmp/hostpath-provisioner/preprod/admin-service-mysql-pv-claim-preprod
+    type: ""
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  volumeMode: Filesystem

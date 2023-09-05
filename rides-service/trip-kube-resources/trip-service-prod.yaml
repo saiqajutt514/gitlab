@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trip-service-deployment
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: trip-service
+  template:
+    metadata:
+      labels:
+        app: trip-service
+    spec:
+      nodeName: uat-preprod-node02
+      containers:
+        - name: trip-service
+          env:
+            - name: "API_PORT"
+              value: "3016"
+            - name: MYSQL_DB_USER
+              value: "root"
+            - name: MYSQL_DB_PASSWORD
+              value: "uJIpc4ACZA"
+            - name: MYSQL_DB_PORT
+              value: "3306"
+            - name: MYSQL_DB_HOST
+              value: "trip-mysql-service"
+            - name: MYSQL_DB
+              value: "trip_dev"
+            - name: KAFKA_HOST
+              value: "kafka.production:9092"
+            - name: PROMO_CODE_END_POINT
+              value: "promo-code-service-svc"
+            - name: CAPTAIN_API_END_POINT
+              value: "captain-service-svc"
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+          image: registry.gitlab.com/loopwallet/loop_transportation_backend/trip-service-production:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8006
+      imagePullSecrets:
+        - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trip-service-svc
+  namespace: production
+spec:
+  selector:
+    app: trip-service
+  ports:
+    - name: app-port
+      port: 8006
+      targetPort: 8006

@@ -1,0 +1,73 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: audit-service-db-deployment
+  namespace: production-audit
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      nodeName: prod-node02
+      containers:
+        - image: mysql:8.0.20
+          name: mysql
+          env:
+            - name: MYSQL_DATABASE
+              value: transport-prod
+            - name: MYSQL_USER
+              value: app
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ROOT_PASSWORD
+                  name: mysql-secrets
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: mysql-secrets                
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: audit-service-mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: audit-service-mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: audit-service-mysql-pv-claim-production
+      imagePullSecrets:
+        - name: gitlab-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: audit-mysql-service
+  namespace: production-audit
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: audit-service-mysql-pv-claim-production
+  namespace: production-audit
+spec: 
+  accessModes:
+    - ReadWriteOnce 
+  resources: 
+    requests:
+      storage: 10Gi
